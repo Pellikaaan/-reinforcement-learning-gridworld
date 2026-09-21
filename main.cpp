@@ -43,19 +43,38 @@ pair<int,int> makeMove(ACTION action, int row, int col)
     return {newRow,newCol};
 }
 
+string ActionToString(ACTION action)
+{
+    switch(action)
+    {
+        case UP:
+            return "UP";
+        case DOWN:
+            return "DOWN";
+        case RIGHT:
+            return "RIGHT";
+        case LEFT:
+            return "LEFT";
+            break;
+    }
+}
+
 void ValueIteration()
 {
-    for(int i = 0; i < ROWS; ++i)
+    ACTION actions [] = {UP,DOWN,LEFT,RIGHT};
+
+    for (int i = 0; i < ROWS; ++i)
     {
-        for(int j = 0; j < COLUMNS; ++j)
+        for (int j = 0; j < COLUMNS; ++j)
         {
             //TEST
-            for(int AllActions=0; AllActions < 4; AllActions++)
+            for (ACTION action : actions)
             {
-                ACTION actions = static_cast<ACTION>(AllActions);
-                pair<int,int> nextState = makeMove(actions, i, j);
+                pair<int,int> nextState = makeMove(action, i, j);
 
                 cout << nextState.first
+                    << ","
+                    << ActionToString(action)
                     << "," 
                     << nextState.second
                     << endl;
