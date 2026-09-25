@@ -1,29 +1,10 @@
-from enum import IntEnum
-
-
-ROWS = 4
-COLUMNS = 4  # 4x4 grid
-
-
-class Cell(IntEnum):
-    EMPTY = 0
-    START = 1
-    GOAL = 2
-    BLOCKADE = 3
-
-
-class Action(IntEnum):
-    UP = 0
-    DOWN = 1
-    LEFT = 2
-    RIGHT = 3
+from mdp import Action, Cell, COLUMNS, ROWS, GridWorldMDP
 
 
 def make_move(action: Action, row: int, col: int) -> tuple[int, int]:
     new_row = row
     new_col = col
 
-    # Preserve the fall-through behavior of the original C++ switch.
     if action == Action.UP:
         new_row -= 1
 
@@ -52,16 +33,24 @@ def action_to_string(action: Action) -> str:
     raise ValueError(f"Unknown action: {action}")
 
 
-def value_iteration() -> None:
+def value_iteration(mdp: GridWorldMDP) -> None:
     actions = (Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT)
-
-    for row in range(ROWS):
-        for col in range(COLUMNS):
-            # TEST
+    for row in range(mdp.rows):
+        for col in range(mdp.columns):
+            state = (row, col)
             for action in actions:
-                next_row, next_col = make_move(action, row, col)
-                print(f"{next_row},{action_to_string(action)},{next_col}")
+                next_states = mdp.transition_probabilities(state, action)
+                for next_state, prob in next_states.items():
+                    print(f"From {state} taking {action_to_string(action)} -> {next_state} with probability {prob}")
 
+
+
+
+def main() -> None:
+     mdp = GridWorldMDP()
+     print("States:", sorted(mdp.states()))
+     value_iteration(mdp)
 
 if __name__ == "__main__":
-    value_iteration()
+     main()
+
