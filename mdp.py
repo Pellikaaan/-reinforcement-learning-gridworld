@@ -4,7 +4,6 @@ from enum import IntEnum
 State: TypeAlias = tuple[int, int]
 TransitionProbabilities: TypeAlias = dict[State, float]
 
-
 ROWS = 4
 COLUMNS = 4  # 4x4 grid
 
@@ -34,7 +33,7 @@ class GridWorldMDP:
         self.goal_state: State = (3, 3)
         self.obstacles: set[State] = {(1, 1), (2, 1)}
 
-        self.goal_reward: float = 10.0
+        self.goal_reward: float = 1.0
         self.obstacle_reward: float = -10.0
         self.step_reward: float = -1.0
 
