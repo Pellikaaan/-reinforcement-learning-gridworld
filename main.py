@@ -1,5 +1,5 @@
 from mdp import Action, Cell, COLUMNS, ROWS, GridWorldMDP, TransitionProbabilities
-
+import matplotlib.pyplot as plt
 
 def make_move(action: Action, row: int, col: int) -> tuple[int, int]:
     new_row = row
@@ -121,10 +121,29 @@ def extract_policy(
 
     return policy
 
+def visualize(
+    mdp: GridWorldMDP,
+    values: dict[State, float],
+    policy: dict[State, Action]
+) -> None:
+
+    fig, ax = plt.subplots()
+
+    ax.set_xlim(0, mdp.columns)
+    ax.set_ylim(mdp.rows, 0)
+
+    ax.set_xticks(range(mdp.columns + 1))
+    ax.set_yticks(range(mdp.rows + 1))
+
+    ax.grid(True)
+
+    plt.show()
+
 def main() -> None:
     mdp = GridWorldMDP()
     values = value_iteration(mdp)
     policy = extract_policy(mdp, values)
+    visualize(mdp, values, policy)
 
     print("\nOptimal policy:")
 
